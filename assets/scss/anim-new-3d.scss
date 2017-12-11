@@ -1,0 +1,68 @@
+@mixin tile-new-transform($val) {
+  -webkit-transform: rotate3d(1, 0, 0, $val);
+  -moz-transform: rotate3d(1, 0, 0, $val);
+  -ms-transform: rotate3d(1, 0, 0, $val);
+  transform: rotate3d(1, 0, 0, $val);
+}
+
+@mixin mixin-new-first {
+  100% {
+    @include tile-new-transform(90deg);
+  }
+}
+
+@mixin mixin-new-second {
+  0% {
+    @include tile-new-transform(270deg);
+  }
+
+  100% {
+    @include tile-new-transform(360deg);
+  }
+}
+
+@-webkit-keyframes tile-new-first {
+  @include mixin-new-first;
+}
+
+@-moz-keyframes tile-new-first {
+  @include mixin-new-first;
+}
+
+@keyframes tile-new-first {
+  @include mixin-new-first;
+}
+
+@-webkit-keyframes tile-new-second {
+  @include mixin-new-second;
+}
+
+@-moz-keyframes tile-new-second {
+  @include mixin-new-second;
+}
+
+@keyframes tile-new-second {
+  @include mixin-new-second;
+}
+
+.tile-new {
+  z-index: 15;
+  perspective: 250px;
+
+  background: white;
+  color: white;
+
+  .first {
+    z-index: 20;
+
+    @include animation(tile-new-first, #{$tile-duration / 2}ms, linear, 0ms);
+    @include animation-fill-mode(forwards);
+  }
+
+  .second {
+    z-index: 20;
+
+    @include animation(tile-new-second, #{$tile-duration / 2}ms, linear, #{$tile-duration / 2}ms);
+    @include animation-fill-mode(both);
+  }
+}

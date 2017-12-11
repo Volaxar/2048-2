@@ -1,0 +1,86 @@
+@mixin mixin-move-first($x, $y) {
+  100% {
+    transform: translate($x, $y);
+  }
+}
+
+@mixin mixin-move-second($x, $y) {
+  0% {
+    transform: translate($x, $y);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+$map-move-first: (
+        'left': (-100px, 0),
+        'up': (0, -100px),
+        'right': (100px, 0),
+        'down': (0, 100px)
+);
+
+$map-move-second: (
+        'left': (100px, 0),
+        'up': (0, 100px),
+        'right': (-100px, 0),
+        'down': (0, -100px)
+);
+
+@each $key, $val in $map-move-first {
+  @-webkit-keyframes tile-move-first-#{$key} {
+    @include mixin-move-first(nth($val, 1), nth($val, 2));
+  }
+
+  @-moz-keyframes tile-move-first-#{$key} {
+    @include mixin-move-first(nth($val, 1), nth($val, 2));
+  }
+
+  @keyframes tile-move-first-#{$key} {
+    @include mixin-move-first(nth($val, 1), nth($val, 2));
+  }
+}
+
+@each $key, $val in $map-move-second {
+  @-webkit-keyframes tile-move-second-#{$key} {
+    @include mixin-move-second(nth($val, 1), nth($val, 2));
+  }
+
+  @-moz-keyframes tile-move-second-#{$key} {
+    @include mixin-move-second(nth($val, 1), nth($val, 2));
+  }
+
+  @keyframes tile-move-second-#{$key} {
+    @include mixin-move-second(nth($val, 1), nth($val, 2));
+  }
+}
+
+.tile-move {
+  z-index: 0;
+
+  @include anim-cell;
+
+  .first {
+    z-index: 0;
+    @include animation-fill-mode(forwards);
+  }
+
+  .second {
+    z-index: 0;
+    @include animation-fill-mode(forwards);
+  }
+}
+
+@each $key in map-keys($map-move-first) {
+  .tile-move.tile-move-#{$key} {
+    .first {
+      @include animation(tile-move-first-#{$key}, #{$tile-duration}ms, linear, 0ms);
+    }
+
+    .second {
+      @include animation(tile-move-second-#{$key}, #{$tile-duration}ms, linear, 0ms);
+    }
+  }
+}
+
